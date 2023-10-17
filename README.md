@@ -12,4 +12,4 @@ This repository contains STL files for the devices used in the article.
 This repository also contains the Mathematica code for creating an arrangement of truncated conical spines in which the liquid topography will reproduce a gray-scale image. 
 
 ### Correspondance 
-Megan Delens at megan.delens@uliege.be
+Megan Delens : megan.delens@uliege.be
