@@ -1,0 +1,578 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20788,        568]
+NotebookOptionsPosition[     18144,        515]
+NotebookOutlinePosition[     18542,        531]
+CellTagsIndexPosition[     18499,        528]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Creating 3 D-Printed Devices for Liquid Manipulation", "Title",
+ CellChangeTimes->{{3.906608420439261*^9, 
+  3.906608428193021*^9}},ExpressionUUID->"9022dbec-ccc7-4603-8971-\
+2c2a9dbc6fda"],
+
+Cell["M . Delens, A . Franckart, N . Vandewalle", "Author",
+ CellChangeTimes->{{3.9066085142841167`*^9, 
+  3.9066085419121037`*^9}},ExpressionUUID->"37d9c4f5-98c9-43fd-b276-\
+de8d27def515"],
+
+Cell["\<\
+GRASP, Institute of Physics, University of Liege, B4000 Liege, Belgium\
+\>", "Affiliation",
+ CellChangeTimes->{
+  3.906608455253428*^9, {3.9066085707134857`*^9, 3.906608621643178*^9}, {
+   3.906609080305348*^9, 
+   3.906609083826764*^9}},ExpressionUUID->"b4d5b076-d9a5-4dc7-8c77-\
+7277c6250b9a"],
+
+Cell[CellGroupData[{
+
+Cell["Reference article ", "Section",
+ CellChangeTimes->{{3.90660865492448*^9, 3.906608673066061*^9}, {
+  3.90660992249032*^9, 
+  3.906609941435403*^9}},ExpressionUUID->"3d707c77-e579-4686-8227-\
+9e1170882af3"],
+
+Cell[TextData[{
+ "Cite this:",
+ StyleBox["\nTitle",
+  FontWeight->"Bold"],
+ " : ",
+ StyleBox["Controlling Liquid Landscape with 3 D-Printed Spines : A Tool for \
+Micromanipulation",
+  FontSlant->"Italic"],
+ "\n",
+ StyleBox["Authors",
+  FontWeight->"Bold"],
+ " :  M . Delens, A . Franckart, N . Vandewalle\n",
+ StyleBox["Preprint",
+  FontWeight->"Bold"],
+ " : Soon available on Arxiv"
+}], "Text",
+ CellChangeTimes->{{3.906608487828319*^9, 3.906608507227469*^9}, {
+  3.906608679819268*^9, 3.9066087752158537`*^9}, {3.9066099466901207`*^9, 
+  3.906609966761887*^9}},ExpressionUUID->"1adbb93a-5a93-4df4-a8ec-\
+fc6150a9517d"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Introduction", "Section",
+ CellChangeTimes->{{3.906608793356357*^9, 
+  3.906608803782196*^9}},ExpressionUUID->"f1378672-13d3-4d85-8f1c-\
+3ccd81630266"],
+
+Cell["\<\
+This notebook contains the Mathematica code used to create 3 D - printed \
+devices engineered to curve liquid into various shapes and extents . The \
+devices are constructed from a series of truncated cones, the specific shape \
+and height of which are determined by a 2 D grayscale image . The methodology \
+and applications are detailed in our scientific article .\
+\>", "Abstract",
+ CellChangeTimes->{{3.906608778362966*^9, 
+  3.906608785200119*^9}},ExpressionUUID->"93ba3703-608d-4cb6-9ee2-\
+8185e6096900"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Code", "Section",
+ CellChangeTimes->{{3.906608903711467*^9, 
+  3.9066089201060753`*^9}},ExpressionUUID->"715dec4a-db72-4441-878a-\
+5423cca2f013"],
+
+Cell[CellGroupData[{
+
+Cell["Image Requirement", "Subsection",
+ CellChangeTimes->{{3.906608923760005*^9, 
+  3.906608940329672*^9}},ExpressionUUID->"46ad25ec-e77a-48e2-b579-\
+2bd1cbaa35c1"],
+
+Cell[TextData[{
+ "The input image must be an",
+ StyleBox[" 8 - bit grayscale image",
+  FontWeight->"Bold"],
+ ". Each pixel' s intensity value is used to determine the height of the \
+corresponding truncated cone in the 3 D model, with darker pixels resulting \
+in higher cones and therefore, higher liquid elevation ."
+}], "Text",
+ CellChangeTimes->{{3.906608943425832*^9, 3.9066089567660437`*^9}, {
+   3.906609037566321*^9, 3.9066090532376328`*^9}, 
+   3.9067147761271887`*^9},ExpressionUUID->"bad1152e-825c-4769-8e49-\
+d75efb42148c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Function to create truncated cones", "Subsection",
+ CellChangeTimes->{{3.906609335450378*^9, 
+  3.9066093634514313`*^9}},ExpressionUUID->"7c88a281-d099-4262-b03e-\
+6043ddcc123e"],
+
+Cell["\<\
+This function generates a 3 D model of a truncated cone based on the given \
+parameters, base radius of the spine R, contact angle between liquid and \
+3D-printed materials \[Theta], the (x,y) position and and the desired liquid \
+elevation h. N represents the number of edges used to creates the side of the \
+truncated cones. \
+\>", "Text",
+ CellChangeTimes->{{3.906609400715609*^9, 
+  3.906609574323852*^9}},ExpressionUUID->"ccfb406a-cf75-4f9b-816a-\
+f7f8f3318c56"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"conT", "[", 
+    RowBox[{
+    "x_", ",", "y_", ",", "R_", ",", "h_", ",", "\[Theta]_", ",", "N_"}], 
+    "]"}], ":=", 
+   RowBox[{"Translate", "[", 
+    RowBox[{
+     RowBox[{"ConvexHullMesh", "[", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"ParallelTable", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"R", "-", 
+               RowBox[{"R", "*", 
+                RowBox[{"j", "/", 
+                 RowBox[{"(", 
+                  RowBox[{"h", " ", 
+                   RowBox[{"R", "/", 
+                    RowBox[{"(", 
+                    RowBox[{"R", "-", 
+                    RowBox[{"h", "/", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"Cos", "[", "\[Theta]", "]"}], "*", 
+                    RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{"Exp", "[", 
+                    RowBox[{
+                    RowBox[{"-", 
+                    RowBox[{"Sqrt", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"R", "-", 
+                    RowBox[{"k", " ", "a"}]}], ")"}], "^", "2"}], "+", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"0", "-", 
+                    RowBox[{"l", " ", "a"}]}], ")"}], "^", "2"}]}], "]"}]}], 
+                    "/", "\[Lambda]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"k", ",", 
+                    RowBox[{"-", "12"}], ",", "12", ",", "1"}], "}"}]}], 
+                    "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"l", ",", 
+                    RowBox[{"-", "12"}], ",", "12", ",", "1"}], "}"}]}], 
+                    "]"}]}], ")"}]}]}], ")"}]}]}], ")"}]}]}]}], ")"}], "*", 
+             RowBox[{"Cos", "[", 
+              RowBox[{
+               RowBox[{"360", "/", "N"}], "*", "i", " ", "Degree"}], "]"}]}], 
+            ",", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"R", "-", 
+               RowBox[{"R", "*", 
+                RowBox[{"j", "/", 
+                 RowBox[{"(", 
+                  RowBox[{"h", " ", 
+                   RowBox[{"R", "/", 
+                    RowBox[{"(", 
+                    RowBox[{"R", "-", 
+                    RowBox[{"h", "/", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"Cos", "[", "\[Theta]", "]"}], "*", 
+                    RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{"Sum", "[", 
+                    RowBox[{
+                    RowBox[{"Exp", "[", 
+                    RowBox[{
+                    RowBox[{"-", 
+                    RowBox[{"Sqrt", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"R", "-", 
+                    RowBox[{"k", " ", "a"}]}], ")"}], "^", "2"}], "+", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"0", "-", 
+                    RowBox[{"l", " ", "a"}]}], ")"}], "^", "2"}]}], "]"}]}], 
+                    "/", "\[Lambda]"}], "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"k", ",", 
+                    RowBox[{"-", "12"}], ",", "12", ",", "1"}], "}"}]}], 
+                    "]"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{"l", ",", 
+                    RowBox[{"-", "12"}], ",", "12", ",", "1"}], "}"}]}], 
+                    "]"}]}], ")"}]}]}], ")"}]}]}], ")"}]}]}]}], ")"}], "*", 
+             RowBox[{"Sin", "[", 
+              RowBox[{
+               RowBox[{"360", "/", "N"}], "*", "i", " ", "Degree"}], "]"}]}], 
+            ",", "j"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "0", ",", 
+            RowBox[{"N", "-", "1"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"j", ",", "0", ",", "h", ",", "h"}], "}"}]}], "]"}], ",", 
+        "1"}], "]"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "y", ",", "0"}], "}"}]}], "]"}]}], ";"}]], "Input",Exp\
+ressionUUID->"6f9e55a5-f87e-4589-8750-28fd7552dbdf"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Parameters ", "Subsection",
+ CellChangeTimes->{{3.906609622137434*^9, 
+  3.9066096325617027`*^9}},ExpressionUUID->"050e4ca8-e414-42a4-a3fd-\
+f0ae9a522f0d"],
+
+Cell["\<\
+These parameters are essential for defining the properties of the truncated \
+cones and the final 3 D model .\
+\>", "Text",
+ CellChangeTimes->{
+  3.906609654220674*^9},ExpressionUUID->"90fe333c-1a82-4084-8d18-\
+0d686d5b75e4"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"R", "=", "0.3"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Base", " ", "radius", " ", "of", " ", "the", " ", "cones"}], 
+   "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hmax", "=", "5."}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Maximal", " ", "desired", " ", "liquid", " ", "height"}], 
+   "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Theta]", "=", 
+    RowBox[{"60.", " ", "Degree"}]}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Contact", " ", "angle", " ", "of", " ", "the", " ", "3", "D", " ", 
+    "printed", " ", "material"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Lambda]", "=", "2.7"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Capillary", " ", "length", " ", "of", " ", "the", " ", "liquid"}],
+    "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"a", "=", "1."}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Lattice", " ", "spacing"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Num", "=", "40."}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "Precision", " ", "to", " ", "create", " ", "the", " ", "mesh", " ", "of", 
+    " ", "the", " ", 
+    RowBox[{"cones", "'"}], " ", "sides"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"newWidth", "=", "100."}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Number", " ", "of", " ", 
+    RowBox[{"pixels", "/", "cones"}], " ", "for", " ", "the", " ", "width", 
+    " ", "of", " ", "the", " ", "device"}], "*)"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"newHeight", "=", "100."}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Number", " ", "of", " ", 
+    RowBox[{"pixels", "/", "cones"}], " ", "for", " ", "the", " ", "height", 
+    " ", "of", " ", "the", " ", "device"}], "*)"}]}]}], "Input",ExpressionUUID\
+->"9751989f-bcd3-47c0-a43e-63fb8f52ffd7"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Image Processing and 3 D Model Creation", "Subsection",
+ CellChangeTimes->{{3.9066096945959663`*^9, 
+  3.906609724545665*^9}},ExpressionUUID->"5f94cf89-0e3f-4f12-b476-\
+1eafad9e687d"],
+
+Cell["\<\
+This function processes the 2 D image and converts it into a 3D STL file of \
+truncated cones\
+\>", "Text",
+ CellChangeTimes->{
+  3.906609746046281*^9, {3.906609804837884*^9, 
+   3.906609812734167*^9}},ExpressionUUID->"9a3e05f8-32e8-46d7-a7fa-\
+88e5fb04bb5a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"processImage", "[", 
+   RowBox[{"imagePath_", ",", "outputPathSTL_"}], "]"}], ":=", 
+  "\[IndentingNewLine]", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "img", ",", "pixels", ",", "resultMatrix", ",", "conesT", ",", 
+      "plotCones", ",", "Cones", ",", " ", "base", ",", "STL"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"Open", " ", "the", " ", "image"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"img", "=", 
+      RowBox[{"Import", "[", "imagePath", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Resize", " ", "the", " ", "image"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"img", "=", 
+      RowBox[{"ImageResize", "[", 
+       RowBox[{"img", ",", 
+        RowBox[{"{", 
+         RowBox[{"newWidth", ",", "newHeight"}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+       RowBox[{"OPTIONAL", "!"}], " ", "Invert", " ", "image"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"img", "=", 
+      RowBox[{"ColorNegate", "[", "img", "]"}]}], ";", "\[IndentingNewLine]", 
+     
+     RowBox[{"(*", 
+      RowBox[{"Check", " ", "the", " ", "new", " ", 
+       RowBox[{"image", ":", " ", 
+        RowBox[{
+        "Darker", " ", "pixels", " ", "will", " ", "create", " ", "higher", 
+         " ", "liquid", " ", "elevations"}]}]}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", "img", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Get", " ", "pixel", " ", "values"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"pixels", "=", 
+      RowBox[{"ImageData", "[", 
+       RowBox[{"img", ",", "\"\<Byte\>\""}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"For", " ", "each", " ", "pixel"}], ",", " ", 
+       RowBox[{"calculate", " ", "the", " ", "desired", " ", "liquid", " ", 
+        RowBox[{"height", ":", " ", 
+         RowBox[{"from", " ", "0", " ", "to", " ", "hmax"}]}]}]}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"resultMatrix", "=", 
+      RowBox[{"ParallelMap", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"N", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "-", 
+             RowBox[{"#", "/", "255."}]}], ")"}], "hmax"}], "]"}], "&"}], ",",
+         "pixels", ",", 
+        RowBox[{"{", "2", "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+      "Create", " ", "a", " ", "table", " ", "with", " ", "all", " ", "the", 
+       " ", "truncated", " ", "cones", " ", "and", " ", "their", " ", 
+       "properties"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"conesT", " ", "=", " ", 
+      RowBox[{"ParallelTable", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"i", ",", "j", ",", 
+          RowBox[{
+           RowBox[{"resultMatrix", "[", 
+            RowBox[{"[", 
+             RowBox[{"i", ",", "j"}], "]"}], "]"}], "+", "0.001"}]}], "}"}], 
+        ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", " ", "1", ",", " ", 
+          RowBox[{"Length", "[", "resultMatrix", "]"}]}], "}"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", " ", "1", ",", " ", 
+          RowBox[{"Length", "[", 
+           RowBox[{"resultMatrix", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "]"}]}], "}"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+      "Create", " ", "the", " ", "final", " ", "device", " ", "with", " ", 
+       "all", " ", "the", " ", "truncated", " ", "cones"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"plotCones", "=", 
+      RowBox[{"Graphics3D", "[", 
+       RowBox[{
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"conT", "[", 
+            RowBox[{
+             RowBox[{"#", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], ",", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], ",", "R", ",", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", "3", "]"}], "]"}], ",", "\[Theta]", ",", "Num"}], 
+            "]"}], "&"}], ",", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"conesT", ",", "1"}], "]"}]}], "]"}], ",", 
+        RowBox[{"Boxed", "->", "False"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Cones", "=", 
+      RowBox[{"DiscretizeGraphics", "[", 
+       RowBox[{"plotCones", ",", 
+        RowBox[{"MaxCellMeasure", "\[Rule]", "Infinity"}], ",", 
+        RowBox[{"PerformanceGoal", "\[Rule]", "\"\<Quality\>\""}]}], "]"}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"base", "=", 
+      RowBox[{"Cuboid", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0.", ",", "0.", ",", 
+          RowBox[{"-", "1."}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"newWidth", "+", "1"}], ",", 
+          RowBox[{"newHeight", "+", "1"}], ",", "0."}], "}"}]}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
+     RowBox[{"STL", "=", 
+      RowBox[{"RegionUnion", "[", 
+       RowBox[{"base", ",", "Cones"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", "Visualization", "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", "STL", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"Export", " ", "the", " ", "ready"}], "-", "to", "-", 
+       RowBox[{"print", " ", "device", " ", "in", " ", "STL"}]}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"Export", "[", 
+      RowBox[{"outputPathSTL", ",", "STL", ",", "\"\<STL\>\""}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",ExpressionUUID->"a973ab9f-710e-\
+4f96-b05d-3f9f2f178617"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Example Usage", "Subsection",
+ CellChangeTimes->{{3.9066096945959663`*^9, 3.906609724545665*^9}, 
+   3.906609865214633*^9},ExpressionUUID->"8fb70ab7-ba6d-44f2-bed3-\
+bcfbf5104510"],
+
+Cell["\<\
+This function processes the 2 D image and converts it into a 3D STL file of \
+truncated cones\
+\>", "Text",
+ CellChangeTimes->{
+  3.906609746046281*^9, {3.906609804837884*^9, 
+   3.906609812734167*^9}},ExpressionUUID->"1edc56c1-32b5-45ab-bdaf-\
+252edb27c7a3"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"processImage", "[", 
+   RowBox[{"\"\<atomium_gradient.png\>\"", ",", "\"\<atomium_stl.stl\>\""}], 
+   "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.906609881043434*^9, 
+  3.9066098996196012`*^9}},ExpressionUUID->"58c2e567-0b5c-451e-9349-\
+d91a0cdc7448"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1141, 864},
+WindowMargins->{{Automatic, 140}, {Automatic, -170}},
+FrontEndVersion->"13.3 pour Mac OS X x86 (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"11a3fc74-f363-445e-b3d2-98711ca61493"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 195, 3, 98, "Title",ExpressionUUID->"9022dbec-ccc7-4603-8971-2c2a9dbc6fda"],
+Cell[778, 27, 189, 3, 31, "Author",ExpressionUUID->"37d9c4f5-98c9-43fd-b276-de8d27def515"],
+Cell[970, 32, 305, 7, 31, "Affiliation",ExpressionUUID->"b4d5b076-d9a5-4dc7-8c77-7277c6250b9a"],
+Cell[CellGroupData[{
+Cell[1300, 43, 210, 4, 67, "Section",ExpressionUUID->"3d707c77-e579-4686-8227-9e1170882af3"],
+Cell[1513, 49, 620, 19, 104, "Text",ExpressionUUID->"1adbb93a-5a93-4df4-a8ec-fc6150a9517d"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2170, 73, 157, 3, 67, "Section",ExpressionUUID->"f1378672-13d3-4d85-8f1c-3ccd81630266"],
+Cell[2330, 78, 520, 9, 108, "Abstract",ExpressionUUID->"93ba3703-608d-4cb6-9ee2-8185e6096900"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2887, 92, 151, 3, 67, "Section",ExpressionUUID->"715dec4a-db72-4441-878a-5423cca2f013"],
+Cell[CellGroupData[{
+Cell[3063, 99, 165, 3, 54, "Subsection",ExpressionUUID->"46ad25ec-e77a-48e2-b579-2bd1cbaa35c1"],
+Cell[3231, 104, 535, 11, 58, "Text",ExpressionUUID->"bad1152e-825c-4769-8e49-d75efb42148c"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3803, 120, 184, 3, 54, "Subsection",ExpressionUUID->"7c88a281-d099-4262-b03e-6043ddcc123e"],
+Cell[3990, 125, 478, 9, 58, "Text",ExpressionUUID->"ccfb406a-cf75-4f9b-816a-f7f8f3318c56"],
+Cell[4471, 136, 4369, 112, 317, "Input",ExpressionUUID->"6f9e55a5-f87e-4589-8750-28fd7552dbdf"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8877, 253, 161, 3, 54, "Subsection",ExpressionUUID->"050e4ca8-e414-42a4-a3fd-f0ae9a522f0d"],
+Cell[9041, 258, 235, 6, 35, "Text",ExpressionUUID->"90fe333c-1a82-4084-8d18-0d686d5b75e4"],
+Cell[9279, 266, 1792, 54, 193, "Input",ExpressionUUID->"9751989f-bcd3-47c0-a43e-63fb8f52ffd7"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11108, 325, 189, 3, 54, "Subsection",ExpressionUUID->"5f94cf89-0e3f-4f12-b476-1eafad9e687d"],
+Cell[11300, 330, 269, 7, 35, "Text",ExpressionUUID->"9a3e05f8-32e8-46d7-a7fa-88e5fb04bb5a"],
+Cell[11572, 339, 5746, 145, 766, "Input",ExpressionUUID->"a973ab9f-710e-4f96-b05d-3f9f2f178617"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17355, 489, 186, 3, 54, "Subsection",ExpressionUUID->"8fb70ab7-ba6d-44f2-bed3-bcfbf5104510"],
+Cell[17544, 494, 269, 7, 35, "Text",ExpressionUUID->"1edc56c1-32b5-45ab-bdaf-252edb27c7a3"],
+Cell[17816, 503, 288, 7, 30, "Input",ExpressionUUID->"58c2e567-0b5c-451e-9349-d91a0cdc7448"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
