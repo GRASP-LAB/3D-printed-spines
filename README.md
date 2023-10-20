@@ -1,6 +1,6 @@
 # Controlling liquid landscape with 3D-printed spines: A tool for micromanipulation
 **M.Delens, A.Franckart, and N. Vandewalle, *Controlling liquid landscape with 3D-printed spines: A tool for micromanipulation*.**   
-Preprint: Soon available
+Preprint: https://doi.org/10.21203/rs.3.rs-3467162/v1
 
 ### Summary of our work 
 Under the influence of gravity, the water level in a glass remains flat and horizontal even when the glass is inclined. An exception occurs at the glass’s edges, where the liquid slightly rises to form a meniscus. We confront this fundamental behavior by introducing 3D-printed devices engineered to curve liquid into limitless shapes and extents.
