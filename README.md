@@ -11,7 +11,8 @@ Under the influence of gravity, the water level in a glass remains flat and hori
 ### Content
 This repository contains STL files for the devices used in the article.  
 This repository also contains the Mathematica code for creating an arrangement of truncated conical spines in which the liquid topography will reproduce a gray-scale image. 
-Please see our publication for additional details and cite it if you use our code or STL files in your work: M.Delens, A.Franckart, D. M. Harris and N. Vandewalle, *3D-Printed Spines for Programmable Liquid Topographies and Micromanipulation* v1 Preprint: https://doi.org/10.21203/rs.3.rs-3467162/v1
+Please see our publication for additional details and cite it if you use our code or STL files in your work: M.Delens, A.Franckart, D. M. Harris and N. Vandewalle, *3D-Printed Spines for Programmable Liquid Topographies and Micromanipulation* 
+v1 Preprint: https://doi.org/10.21203/rs.3.rs-3467162/v1
 
 ### Correspondance 
 Megan Delens : megan.delens@uliege.be
