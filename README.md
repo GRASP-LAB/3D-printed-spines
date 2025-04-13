@@ -14,5 +14,9 @@ This repository also contains the Mathematica code for creating an arrangement o
 Please see our publication for additional details and cite it if you use our code or STL files in your work: M.Delens, A.Franckart, D. M. Harris and N. Vandewalle, *3D-Printed Spines for Programmable Liquid Topographies and Micromanipulation* 
 v1 Preprint: https://doi.org/10.21203/rs.3.rs-3467162/v1
 
+### DOI for the repository
+<a href="https://doi.org/10.5281/zenodo.15205889"><img src="https://zenodo.org/badge/706317332.svg" alt="DOI"></a>
+
+
 ### Correspondance 
 Megan Delens : megan.delens@uliege.be
