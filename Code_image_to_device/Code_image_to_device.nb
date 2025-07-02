@@ -93,15 +93,15 @@ Cell[TextData[{
  StyleBox["3D-Printed Spines for Programmable Liquid Topographies and \
 Micromanipulation,",
   FontSlant->"Italic"],
- "  Nature Communications (2025), In press.\n",
- StyleBox["Preprint",
+ " Nat Commun 16, 4348 (2025).\n",
+ StyleBox[" ",
   FontWeight->"Bold"],
  " : ",
- ButtonBox["https://doi.org/10.21203/rs.3.rs-3467162/v1",
+ ButtonBox["https://doi.org/10.1038/s41467-025-59483-x",
   BaseStyle->"Hyperlink",
   ButtonData->{
-    URL["https://doi.org/10.21203/rs.3.rs-3467162/v1"], None},
-  ButtonNote->"https://doi.org/10.21203/rs.3.rs-3467162/v1"]
+    URL["https://doi.org/10.1038/s41467-025-59483-x"], None},
+  ButtonNote->"https://doi.org/10.1038/s41467-025-59483-x"]
 }], "Text",
  CellChangeTimes->{{3.906608487828319*^9, 3.906608507227469*^9}, {
    3.906608679819268*^9, 3.9066087752158537`*^9}, {3.9066099466901207`*^9, 
